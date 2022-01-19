@@ -9,7 +9,7 @@ const createAuthor = async function(req, res) {
         let requestBody = req.body
 
         if (!validator.isValidRequestBody(requestBody)) {
-            return res.status(400).send({ status: false, message: "Invalid request parameter, please provide author Detaills" })
+            return res.status(400).send({ status: false, message: "Invalid request parameter, please provide author Details" })
         }
 
         //Extract body params
@@ -32,7 +32,7 @@ const createAuthor = async function(req, res) {
             return res.status(400).send({ status: false, message: `Email is required` })
         }
 
-        //Email validation whether it is entered perfectly or not.
+        //Email validation using Regex, whether it is entered perfectly or not.
         if (!(/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))) {
             res.status(400).send({ status: false, message: `Email should be a valid email address` })
             return
@@ -41,8 +41,9 @@ const createAuthor = async function(req, res) {
         if (!validator.isValid(password)) {
             return res.status(400).send({ status: false, message: `Password is required` })
         }
-        const isEmailAlredyUsed = await authorModel.findOne({ email })
-        if (isEmailAlredyUsed) {
+
+        const isEmailAlreadyUsed = await authorModel.findOne({ email })
+        if (isEmailAlreadyUsed) {
             return res.status(400).send({ status: false, message: `${email} email address is already registered` })
         }
         //validation Ends

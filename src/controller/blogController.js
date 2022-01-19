@@ -127,8 +127,8 @@ const getBlog = async function (req, res) {
 };
 
 
-//!............................................................................
-
+//!................................................................................
+//Updates a blog by changing the its title, body, adding tags, adding a subcategory.
 const updateDetails = async function (req, res) {
   try {
     let authorIdFromToken = req.authorId;
