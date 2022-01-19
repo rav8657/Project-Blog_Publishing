@@ -43,15 +43,15 @@ const createBlog = async function (req, res) {
       publishedAt: isPublished ? new Date() : null,
     };
     if (tags) {
-      if (Array.isArray(tags)) {
+      if (Array.isArray(tags)) {                   //isArray determines whether the passed value is an Array
         const uniqueTagArr = [...new Set(tags)];
-        blogData["tags"] = uniqueTagArr; //Using array constructor here
+        blogData["tags"] = uniqueTagArr; 
       }
     }
     if (subcategory) {
       if (Array.isArray(subcategory)) {
         const uniqueSubcategoryArr = [...new Set(subcategory)];
-        blogData["subcategory"] = uniqueSubcategoryArr; //Using array constructor here
+        blogData["subcategory"] = uniqueSubcategoryArr;        //Using array constructor here
       }
     }
     const newBlog = await blogModel.create(blogData);
