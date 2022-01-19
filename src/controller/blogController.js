@@ -10,8 +10,10 @@ const createBlog = async function (req, res) {
     if (!validator.isValidRequestBody(requestBody)) {
       return res.status(400).send({ status: false, message: "Invalid request parameters. Please provide blog details" });
     }
+
     //Extract params
     const { title, body, authorId, tags, category, subcategory, isPublished } = requestBody;
+    
     // Validation starts
     if (!validator.isValid(title)) {
       return res.status(400).send({ status: false, message: "Blog Title is required" });
@@ -43,15 +45,15 @@ const createBlog = async function (req, res) {
       publishedAt: isPublished ? new Date() : null,
     };
     if (tags) {
-      if (Array.isArray(tags)) {                   //isArray determines whether the passed value is an Array
+      if (Array.isArray(tags)) {             //isArray determines whether the passed value is an Array
         const uniqueTagArr = [...new Set(tags)];
-        blogData["tags"] = uniqueTagArr; 
+        blogData["tags"] = uniqueTagArr;   //Using array constructor
       }
     }
     if (subcategory) {
       if (Array.isArray(subcategory)) {
         const uniqueSubcategoryArr = [...new Set(subcategory)];
-        blogData["subcategory"] = uniqueSubcategoryArr;        //Using array constructor here
+        blogData["subcategory"] = uniqueSubcategoryArr;        //Using array constructor 
       }
     }
     const newBlog = await blogModel.create(blogData);
@@ -67,7 +69,8 @@ const createBlog = async function (req, res) {
 //get all blogs by using filters - title,tags,category & subcategory.
 const getBlog = async function (req, res) {
   try {
-    let filterQuery = { isDeleted: false, deletedAt: null, isPublished: true };
+    let filterQuery = { isDeleted: false, deletedAt: null,  isPublished: true };
+    
     let queryParams = req.query;
     const { authorId, category, tags, subcategory } = queryParams;
 
@@ -103,20 +106,19 @@ const getBlog = async function (req, res) {
       }
 
       if (validator.isValid(tags)) {
-
         const tagsArr = tags.trim().split(",").map((x) => x.trim());
-        filterQuery["tags"] = { $all: tagsArr };
+        filterQuery["tags"] = { $all: tagsArr };   //$all check for documents that have an array field with all of the values given.
       }
 
       if (validator.isValid(subcategory)) {
 
-        const subcatArr = subcategory.trim().split(",").map((subcat) => subcat.trim());
+        const subcatArr = subcategory.trim().split(",").map((x) => x.trim());
         filterQuery["subcategory"] = { $all: subcatArr };
       }
     }
     const blog = await blogModel.find(filterQuery);
 
-    if (Array.isArray(blog) && blog.length === 0) {
+    if (Array.isArray(blog) && blog.length === 0) {           //isArray determines whether the passed value is an Array
       return res.status(404).send({ status: false, message: "No blogs found" })
     }
 
@@ -128,6 +130,7 @@ const getBlog = async function (req, res) {
 
 
 //!................................................................................
+
 //Updates a blog by changing the its title, body, adding tags, adding a subcategory.
 const updateDetails = async function (req, res) {
   try {
@@ -141,19 +144,19 @@ const updateDetails = async function (req, res) {
       return res.status(400).send({ status: false, message: `BlogId is invalid.`});
     }
     if (!validator.validString(title)) {
-      return res.status(400).send({ status: false, message: "Title is required for updatation." });
+      return res.status(400).send({ status: false, message: "Title is required for updatation."});
     }
     if (!validator.validString(body)) {
-      return res.status(400).send({ status: false, message: "Body is required for updatation." });
+      return res.status(400).send({ status: false, message: "Body is required for updatation."});
     }
     if (tags) {
       if (tags.length === 0) {
-        return res.status(400).send({ status: false, message: "tags is required for updatation." });
+        return res.status(400).send({ status: false, message: "tags is required for updatation."});
       }
     }
     if (subcategory) {
       if (subcategory.length === 0) {
-        return res.status(400).send({ status: false, message: "subcategory is required for updatation." });
+        return res.status(400).send({ status: false, message: "subcategory is required for updatation."});
       }
     }
 
@@ -166,8 +169,8 @@ const updateDetails = async function (req, res) {
       res.status(401).send({ status: false, message: `Unauthorized access! author's info doesn't match` });
       return;
     }
-    if (
-      req.body.title || req.body.body || req.body.tags || req.body.subcategory) {
+    if ( req.body.title || req.body.body || req.body.tags || req.body.subcategory) {
+
       const title = req.body.title;
       const body = req.body.body;
       const tags = req.body.tags;
@@ -256,7 +259,7 @@ const deleteBlogByQuery = async function (req, res) {
       filterQuery['tags'] = { $all: tagsArr }
     }
     if (validator.isValid(subcategory)) {
-      const subcatArr = subcategory.trim().split(',').map(subcat => subcat.trim());
+      const subcatArr = subcategory.trim().split(',').map(x => x.trim());
       filterQuery['subcategory'] = { $all: subcatArr }
     }
     const findBlogs = await blogModel.find(filterQuery);
