@@ -1,3 +1,4 @@
+const mongoose = require('mongoose')
 //Validating functions - 
 const isValid = function(value) {
     if (typeof value === "undefined" || value === null) return false
@@ -14,10 +15,22 @@ const isValidTitle = function(title) {
 const isValidRequestBody = function(requestBody) {
         return Object.keys(requestBody).length > 0
     } 
-    //Validating fucntions ends here.
+
+
+    const isValidObjectId = function(objectId) {
+        return mongoose.Types.ObjectId.isValid(objectId)
+    }
+
+    const validString = function(value) {
+        if (typeof value === 'string' && value.trim().length === 0) return false 
+        return true;
+    }
+    //Validating functions ends here.
 
     module.exports = {
         isValid,
         isValidTitle,
-        isValidRequestBody
+        isValidRequestBody,
+        isValidObjectId,
+        validString
     }

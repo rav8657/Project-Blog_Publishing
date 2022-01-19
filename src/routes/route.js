@@ -10,10 +10,10 @@ router.post('/login', authorController.loginAuthor)
 
 //Blog routes
 router.post('/blogs', middleware.loginCheck, blogController.createBlog)
-router.get('/filterblogs', middleware.loginCheck, blogController.getBlog)
+router.get('/blogs', middleware.loginCheck, blogController.getBlog)
 router.put('/blogs/:blogId', middleware.loginCheck, blogController.updateDetails)
-router.delete('/blogs/:blogId', middleware.loginCheck, blogController.deleteBlog)
-router.delete('/blogs', middleware.loginCheck, blogController.deleteSpecific)
+router.delete('/blogs/:blogId', middleware.loginCheck, blogController.deleteBlogById)
+router.delete('/blogs', middleware.loginCheck, blogController.deleteBlogByQuery)
 
 
 

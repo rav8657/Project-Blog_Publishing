@@ -12,7 +12,7 @@ const mongoose = require("mongoose")
 
 app.use('/', route);
 
-mongoose.connect("mongodb+srv://monty-python:SnYUEY4giV9rekw@functionup-backend-coho.0zpfv.mongodb.net/Sourav_db?retryWrites=true&w=majority", )
+mongoose.connect("mongodb+srv://monty-python:SnYUEY4giV9rekw@functionup-backend-coho.0zpfv.mongodb.net/Sourav_db?retryWrites=true&w=majority" )
     .then(() => console.log('mongodb Rock n Roll on 3000'))
     .catch(err => console.log(err))
 

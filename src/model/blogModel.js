@@ -13,7 +13,7 @@ const blogSchema = new mongoose.Schema({
     },
     authorId: {
         type: ObjectId,
-        ref: 'Author'
+        ref: 'Authors_project1'
     },
 
     tags: [String],
@@ -43,4 +43,4 @@ const blogSchema = new mongoose.Schema({
     }
 }, { timestamps: true })
 
-module.exports = mongoose.model('Blog', blogSchema)
+module.exports = mongoose.model('Blogs_project1', blogSchema)
