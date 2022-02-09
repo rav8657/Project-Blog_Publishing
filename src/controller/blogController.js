@@ -13,7 +13,7 @@ const createBlog = async function (req, res) {
 
     //Extract params
     const { title, body, authorId, tags, category, subcategory, isPublished } = requestBody;
-    
+     
     // Validation starts
     if (!validator.isValid(title)) {
       return res.status(400).send({ status: false, message: "Blog Title is required" });
@@ -165,6 +165,7 @@ const updateDetails = async function (req, res) {
     if (!Blog) {
       return res.status(400).send({ status: false, msg: "No such blog found" });
     }
+    
     if (Blog.authorId.toString() !== authorIdFromToken) {
       res.status(401).send({ status: false, message: `Unauthorized access! author's info doesn't match` });
       return;
