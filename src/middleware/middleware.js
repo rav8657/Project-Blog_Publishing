@@ -19,7 +19,6 @@ const loginCheck = async function(req, res, next) {
         next()
         
     } catch (error) {
-        
         res.status(500).send({ status: false, message: error.message })
     }
 }
